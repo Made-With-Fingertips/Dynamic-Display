@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="refresh_rates">
+        <item>48 Hz</item>
+        <item>60 Hz</item>
+        <item>96 Hz</item>
+        <item>120 Hz</item>
+    </string-array>
+
+    <string-array name="refresh_rates_values">
+        <item>48.0</item>
+        <item>60.0</item>
+        <item>96.0</item>
+        <item>120.0</item>
+    </string-array>
+
+</resources>

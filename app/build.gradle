@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "dev.fingertips.s20refreshrate"
+        minSdkVersion 23
+        targetSdkVersion 29
+
+        versionCode appVersionMajor * 10000 + appVersionMinor * 1000 + appVersionPatch * 100 + appVersionBuild
+        versionName "${appVersionMajor}.${appVersionMinor}.${appVersionPatch}"
+        setProperty("archivesBaseName", "${defaultConfig.applicationId}-v${defaultConfig.versionName}-c${defaultConfig.versionCode}")
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
+        }
+    }
+    androidExtensions {
+        experimental = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation "androidx.test:runner:$xTestRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$xEspressoVersion"
+    testImplementation "junit:junit:$JUnitVersion"
+
+    implementation "androidx.appcompat:appcompat:$xAppcompatVersion"
+    implementation "androidx.core:core-ktx:$xCoreVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$xConstraintVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$xLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$xLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$xLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$xLifecycleVersion"
+    implementation "androidx.preference:preference-ktx:$xPreferenceVersion"
+    implementation "androidx.recyclerview:recyclerview:$xRecyclerVersion"
+    implementation "androidx.room:room-runtime:$xRoomVersion"
+    kapt "androidx.room:room-compiler:$xRoomVersion"
+    implementation "androidx.room:room-ktx:$xRoomVersion"
+    implementation "com.google.android.material:material:$xMaterialVersion"
+
+    api            "com.google.dagger:dagger:$daggerVersion"
+    kapt           "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    implementation "com.afollestad.material-dialogs:core:$materialDialogsVersion"
+    implementation "com.afollestad:recyclical:$recyclicalVersion"
+
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "com.github.PaulWoitaschek:Slimber:$slimberVersion"
+
+    implementation "com.reddit:indicator-fast-scroll:$fastScrollVersion"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
+}

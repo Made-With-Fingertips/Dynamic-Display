@@ -1,0 +1,39 @@
+ext {
+    // Application Version
+    appVersionMajor = 0
+    appVersionMinor = 0
+    appVersionPatch = 1
+    appVersionBuild = 0
+
+    // Plugin Versions
+    androidBuildToolsVersion = '3.6.1'
+    kotlinVersion = '1.3.71'
+
+    // Dependency versions
+    // AndroidX https://maven.google.com
+    xAppcompatVersion = '1.1.0'
+    xConstraintVersion = '1.1.3'
+    xCoreVersion = '1.2.0'
+    xEspressoVersion = '3.1.1'
+    xLifecycleVersion = '2.2.0'
+    xMaterialVersion = '1.2.0-alpha05'
+    xPreferenceVersion = '1.1.0'
+    xRecyclerVersion = '1.1.0'
+    xRoomVersion = '2.2.5'
+    xTestRunnerVersion = '1.1.1'
+
+    daggerVersion = '2.25.2' // https://github.com/google/dagger
+
+    JUnitVersion = '4.13'
+
+    fastScrollVersion = '1.2.1'
+
+    kotlinCoroutinesVersion = '1.3.1' // https://github.com/Kotlin/kotlinx.coroutines#android
+
+    materialDialogsVersion = '3.3.0' // https://github.com/afollestad/material-dialogs/blob/master/documentation/CORE.md#gradle-dependency
+
+    recyclicalVersion = '1.1.1' // https://github.com/afollestad/recyclical#gradle-dependency
+
+    slimberVersion = '1.0.7' // https://github.com/PaulWoitaschek/Slimber
+    timberVersion = '4.7.1' // https://github.com/JakeWharton/Timber#download
+}
