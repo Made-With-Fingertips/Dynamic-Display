@@ -4,7 +4,7 @@
 
 This is an application that allows you to change your refresh rate between 60Hz and 120Hz based on the currently running application.
 
-#### This application is designed on work only on Samsung Galaxy S20, S20+, and S20 Ultra phones.
+#### This application is designed to work only on Samsung Galaxy S20, S20+, and S20 Ultra phones.
 
 ## Installation
 
