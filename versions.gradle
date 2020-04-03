@@ -2,7 +2,7 @@ ext {
     // Application Version
     appVersionMajor = 0
     appVersionMinor = 0
-    appVersionPatch = 1
+    appVersionPatch = 2
     appVersionBuild = 0
 
     // Plugin Versions

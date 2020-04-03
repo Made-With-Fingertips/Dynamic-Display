@@ -16,19 +16,37 @@ class RefreshRate @Inject constructor(
     private val preferences: Preferences
 ) {
     var minRefreshRate: Float
-        get() = Settings.Secure.getFloat(contentResolver, MIN_REFRESH_RATE)
+        get() {
+            return try {
+                Settings.Secure.getFloat(contentResolver, MIN_REFRESH_RATE)
+            } catch (e: RuntimeException) {
+                60F
+            }
+        }
         set(value) {
             Settings.Secure.putFloat(contentResolver, MIN_REFRESH_RATE, value)
         }
 
     var peakRefreshRate: Float
-        get() = Settings.Secure.getFloat(contentResolver, PEAK_REFRESH_RATE)
-        set(value)  {
+        get()  {
+            return try {
+                Settings.Secure.getFloat(contentResolver, PEAK_REFRESH_RATE)
+            } catch (e: RuntimeException) {
+                60F
+            }
+        }
+        set(value) {
             Settings.Secure.putFloat(contentResolver, PEAK_REFRESH_RATE, value)
         }
 
     var refreshRateMode: Int
-        get() = Settings.Secure.getInt(contentResolver, REFRESH_RATE_MODE)
+        get() {
+            return try {
+                Settings.Secure.getInt(contentResolver, REFRESH_RATE_MODE)
+            } catch (e: RuntimeException) {
+                0
+            }
+        }
         set(value) {
             Settings.Secure.putInt(contentResolver, REFRESH_RATE_MODE, value)
         }

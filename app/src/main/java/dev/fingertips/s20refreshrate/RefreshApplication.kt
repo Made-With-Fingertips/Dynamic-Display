@@ -25,7 +25,7 @@ class RefreshApplication : Application() {
         appComponent.inject(this)
         preferences.defaultRate.let { value ->
             if (value == 0) {
-                preferences.defaultRate = refreshRate.minRefreshRate.toInt()
+                preferences.defaultRate = 60
             }
         }
     }
