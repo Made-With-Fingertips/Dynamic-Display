@@ -37,9 +37,22 @@ class PermissionsFragment : Fragment() {
             throw IllegalStateException("Both acc and adb are false")
         }
 
-        if (acc) {
+        if (!adb) {
+            // adb permission needs to be set, hide the accessibility views for now
             acc_text.visibility = View.GONE
             acc_button.visibility = View.GONE
+
+            adb_text.visibility = View.VISIBLE
+            adb_visit.visibility = View.VISIBLE
+            adb_share.visibility = View.VISIBLE
+        } else if (!acc) {
+            // adb permission is set but we still need accessibility, hide the adb views
+            adb_text.visibility = View.GONE
+            adb_visit.visibility = View.GONE
+            adb_share.visibility = View.GONE
+
+            acc_text.visibility = View.VISIBLE
+            acc_button.visibility = View.VISIBLE
         }
 
         acc_button.setOnClickListener {
@@ -47,12 +60,6 @@ class PermissionsFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
-        }
-
-        if (adb) {
-            adb_text.visibility = View.GONE
-            adb_visit.visibility = View.GONE
-            adb_share.visibility = View.GONE
         }
 
         adb_visit.setOnClickListener {
@@ -86,7 +93,7 @@ class PermissionsFragment : Fragment() {
         private const val ARG_ADB = "adb"
 
         private const val INSTRUCTIONS_URL = "https://github.com/brericha/S20-Refresh-Rate/README.md"
-        private val INSTRUCTIONS_URI = Uri.parse(INSTRUCTIONS_URL)
+        val INSTRUCTIONS_URI: Uri = Uri.parse(INSTRUCTIONS_URL)
 
         fun newInstance(acc: Boolean = false, adb: Boolean = false): PermissionsFragment {
             val fragment = PermissionsFragment()

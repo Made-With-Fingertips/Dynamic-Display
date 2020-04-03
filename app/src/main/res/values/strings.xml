@@ -10,6 +10,8 @@
     <string name="permission_adb">You need to grant S20 Refresh Rate the WRITE_SECURE_SETTINGS permission. This can be done with the adb tool. Visit or share the link below for instructions.</string>
     <string name="permission_adb_visit">Visit</string>
     <string name="permission_adb_share">Share</string>
+    <string name="permission_adb_missing">WRITE_SECURE_SETTINGS permission is missing</string>
+    <string name="permission_adb_missing_sub">Tap here to learn how to grant this permission</string>
 
     <string name="permission_acc">S20 Refresh Rate uses an accessibility service to monitor when an app enters the foreground. Please enable the S20 Refresh Rate accessibility service</string>
     <string name="permission_acc_button">Enable Accessibility Service</string>
