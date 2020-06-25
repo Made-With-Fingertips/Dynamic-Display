@@ -7,6 +7,8 @@
     <string name="sixty_hz">60 Hz</string>
     <string name="one_twenty_hz">120 Hz</string>
 
+    <string name="save">Save</string>
+
     <string name="permission_adb">You need to grant S20 Refresh Rate the WRITE_SECURE_SETTINGS permission. This can be done with the adb tool. Visit or share the link below for instructions.</string>
     <string name="permission_adb_visit">Visit</string>
     <string name="permission_adb_share">Share</string>

@@ -2,6 +2,7 @@ package dev.fingertips.s20refreshrate.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDao {
@@ -13,6 +14,9 @@ interface AppDao {
 
     @Query("SELECT * FROM apps")
     fun getAllAppsAsLiveData(): LiveData<List<App>>
+
+    @Query("SELECT * FROM apps")
+    fun getAllAppsAsFlow(): Flow<List<App>>
 
     @Query("SELECT * FROM apps WHERE packageName = :packageName")
     suspend fun getApp(packageName: String): App?
