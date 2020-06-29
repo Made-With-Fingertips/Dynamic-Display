@@ -6,7 +6,7 @@ ext {
     appVersionBuild = 0
 
     // Plugin Versions
-    androidBuildToolsVersion = '3.6.1'
+    androidBuildToolsVersion = '4.0.0'
     kotlinVersion = '1.3.71'
 
     // Dependency versions

@@ -45,22 +45,22 @@ class RefreshService : AccessibilityService(), CoroutineScope {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            // TODO: A list of system package names to ignore
             event.packageName.toString().let { packageName ->
                 d { packageName }
                 if (packageName == lastPackageName) return
+                if (ignoredPackages.contains(packageName)) return
 
                 launch {
                     val app = appDao.getApp(packageName)
                     try {
                         if (app != null) {
                             when (app.mode) {
-                                Mode.SIXTY -> refreshRate.set60Hz()
-                                Mode.ONE_TWENTY -> refreshRate.set120Hz()
-                                else -> refreshRate.setDefault()
+                                Mode.SIXTY -> refreshRate.set60Hz(packageName)
+                                Mode.ONE_TWENTY -> refreshRate.set120Hz(packageName)
+                                else -> refreshRate.setDefault(packageName)
                             }
                         } else {
-                            refreshRate.setDefault()
+                            refreshRate.setDefault(packageName)
                         }
 
                         lastPackageName = packageName
@@ -98,6 +98,8 @@ class RefreshService : AccessibilityService(), CoroutineScope {
 
     companion object {
         val serviceConnected = MutableLiveData<Boolean>()
+
+        val ignoredPackages = listOf("com.android.systemui")
 
         fun isAccessibilityServiceEnabled(context: Context, packageName: String): Boolean {
             val am = context.getSystemService(AccessibilityManager::class.java) ?: throw IllegalStateException("Unable to get AccessibilityManager")

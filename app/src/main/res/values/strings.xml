@@ -22,4 +22,6 @@
     <string name="restart">Tap here to restart app after granting permissions</string>
 
     <string name="acc_description">S20 Refresh Rate monitors the currently running app to change the display refresh rate per user settings</string>
+
+    <string name="qs_title">Refresh Rate</string>
 </resources>

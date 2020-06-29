@@ -15,6 +15,9 @@ class RefreshRate @Inject constructor(
     private val contentResolver: ContentResolver,
     private val preferences: Preferences
 ) {
+    var lastRunningPackage = ""
+        private set
+
     var minRefreshRate: Float
         get() {
             return try {
@@ -53,7 +56,11 @@ class RefreshRate @Inject constructor(
 
     private var lastRefreshRate: Float = 0F
 
-    fun set60Hz() {
+    fun set60Hz(packageName: String? = null) {
+        if (packageName != null) {
+            lastRunningPackage = packageName
+        }
+
         if (lastRefreshRate != 60F) {
             d { "Changing to 60Hz" }
             minRefreshRate = 60.0F
@@ -64,7 +71,11 @@ class RefreshRate @Inject constructor(
         }
     }
 
-    fun set120Hz() {
+    fun set120Hz(packageName: String? = null) {
+        if (packageName != null) {
+            lastRunningPackage = packageName
+        }
+
         if (lastRefreshRate != 120F) {
             d { "Changing to 120Hz" }
             minRefreshRate = 120.0F
@@ -75,11 +86,18 @@ class RefreshRate @Inject constructor(
         }
     }
 
-    fun setDefault() {
+    fun setDefault(packageName: String? = null) {
         d { "Changing to default Hz" }
         when (preferences.defaultRate) {
-            60 -> set60Hz()
-            120 -> set120Hz()
+            60 -> set60Hz(packageName)
+            120 -> set120Hz(packageName)
+        }
+    }
+
+    fun toggle() {
+        when (refreshRateMode) {
+            0 -> set120Hz()
+            2 -> set60Hz()
         }
     }
 
