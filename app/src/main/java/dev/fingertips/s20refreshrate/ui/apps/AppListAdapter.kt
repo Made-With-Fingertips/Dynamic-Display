@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.fingertips.s20refreshrate.R
 import dev.fingertips.s20refreshrate.db.Mode
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class AppListAdapter @Inject constructor(
     private val context: Context
 ) : RecyclerView.Adapter<AppListAdapter.AppViewHolder>() {
     private val appsList = mutableListOf<AppItem>()
+    private val originalAppsList = mutableListOf<AppItem>()
 
     private var onClickListener: (packageName: String) -> Unit = {}
 
@@ -61,13 +63,34 @@ class AppListAdapter @Inject constructor(
         onClickListener = {}
     }
 
-    fun updateAppsList(newList: List<AppItem>) {
+    private fun String.containsIgnoreCase(rhs: String): Boolean {
+        return this.toLowerCase(Locale.getDefault()).contains(rhs.toLowerCase(Locale.getDefault()))
+    }
+
+    fun search(query: String) {
+        val results = originalAppsList
+            .filter { it.name.containsIgnoreCase(query) || it.packageName.containsIgnoreCase(query) }
+            .sortedBy { it.name.toLowerCase(Locale.getDefault()) }
+        updateAppsList(results, true)
+    }
+
+    fun endSearch() {
+        updateAppsList(originalAppsList, true)
+    }
+
+    fun updateAppsList(newList: List<AppItem>, fromSearch: Boolean = false) {
         Timber.d("Received ${newList.size} new AppItems")
         val diff = Diff(appsList, newList)
         val result = DiffUtil.calculateDiff(diff)
 
         appsList.clear()
         appsList.addAll(newList)
+
+        if (!fromSearch) {
+            originalAppsList.clear()
+            originalAppsList.addAll(appsList)
+        }
+
         result.dispatchUpdatesTo(this)
     }
 

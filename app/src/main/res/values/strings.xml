@@ -2,6 +2,7 @@
     <string name="app_name">S20 Refresh Rate</string>
 
     <string name="action_default">Set Default Hz</string>
+    <string name="action_search">Search</string>
 
     <string name="default_hz">Default</string>
     <string name="sixty_hz">60 Hz</string>
