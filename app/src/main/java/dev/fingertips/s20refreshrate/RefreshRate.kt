@@ -17,6 +17,7 @@ class RefreshRate @Inject constructor(
 ) {
     var lastRunningPackage = ""
         private set
+    var lastRunningAppName = ""
 
     var minRefreshRate: Float
         get() {
@@ -86,7 +87,7 @@ class RefreshRate @Inject constructor(
         }
     }
 
-    fun setDefault(packageName: String? = null) {
+    fun setDefault(packageName: String? = null, name: String? = null) {
         d { "Changing to default Hz" }
         when (preferences.defaultRate) {
             60 -> set60Hz(packageName)

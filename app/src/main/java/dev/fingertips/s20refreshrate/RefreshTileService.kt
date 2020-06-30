@@ -53,15 +53,17 @@ class RefreshTileService : TileService(), CoroutineScope{
 
             this.state = Tile.STATE_INACTIVE
 
+            this.label = refreshRate.lastRunningAppName
+
             when (refreshRate.refreshRateMode) {
                 0 -> {
                     this.icon = Icon.createWithResource(context, R.drawable.ic_qs_60)
-                    this.label = context.getString(R.string.sixty_hz)
+                    // this.label = context.getString(R.string.sixty_hz)
                     mode = Mode.SIXTY
                 }
                 2 -> {
                     this.icon = Icon.createWithResource(context, R.drawable.ic_qs_120)
-                    this.label = context.getString(R.string.one_twenty_hz)
+                    // this.label = context.getString(R.string.one_twenty_hz)
                     mode = Mode.ONE_TWENTY
                 }
                 else -> {

@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import androidx.core.app.NotificationCompat
@@ -64,6 +65,12 @@ class RefreshService : AccessibilityService(), CoroutineScope {
                         }
 
                         lastPackageName = packageName
+                        try {
+                            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+                            refreshRate.lastRunningAppName = appInfo.loadLabel(packageManager).toString()
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            refreshRate.lastRunningAppName = getString(R.string.app_name)
+                        }
                     } catch (e: SecurityException) {
                         notifyPermissionNeeded()
                     }
