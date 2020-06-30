@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import androidx.core.app.NotificationCompat
@@ -45,25 +46,31 @@ class RefreshService : AccessibilityService(), CoroutineScope {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            // TODO: A list of system package names to ignore
             event.packageName.toString().let { packageName ->
                 d { packageName }
                 if (packageName == lastPackageName) return
+                if (ignoredPackages.contains(packageName)) return
 
                 launch {
                     val app = appDao.getApp(packageName)
                     try {
                         if (app != null) {
                             when (app.mode) {
-                                Mode.SIXTY -> refreshRate.set60Hz()
-                                Mode.ONE_TWENTY -> refreshRate.set120Hz()
-                                else -> refreshRate.setDefault()
+                                Mode.SIXTY -> refreshRate.set60Hz(packageName)
+                                Mode.ONE_TWENTY -> refreshRate.set120Hz(packageName)
+                                else -> refreshRate.setDefault(packageName)
                             }
                         } else {
-                            refreshRate.setDefault()
+                            refreshRate.setDefault(packageName)
                         }
 
                         lastPackageName = packageName
+                        try {
+                            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+                            refreshRate.lastRunningAppName = appInfo.loadLabel(packageManager).toString()
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            refreshRate.lastRunningAppName = getString(R.string.app_name)
+                        }
                     } catch (e: SecurityException) {
                         notifyPermissionNeeded()
                     }
@@ -98,6 +105,8 @@ class RefreshService : AccessibilityService(), CoroutineScope {
 
     companion object {
         val serviceConnected = MutableLiveData<Boolean>()
+
+        val ignoredPackages = listOf("com.android.systemui")
 
         fun isAccessibilityServiceEnabled(context: Context, packageName: String): Boolean {
             val am = context.getSystemService(AccessibilityManager::class.java) ?: throw IllegalStateException("Unable to get AccessibilityManager")

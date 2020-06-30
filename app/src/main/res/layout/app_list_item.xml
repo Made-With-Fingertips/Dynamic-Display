@@ -45,44 +45,4 @@
         tools:text="@string/app_name"
         />
 
-    <RadioGroup
-        android:id="@+id/button_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        app:layout_constraintTop_toBottomOf="@id/app_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
-
-        <RadioButton
-            android:id="@+id/radio_default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/default_hz"
-            />
-
-        <RadioButton
-            android:id="@+id/radio_60_hz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sixty_hz"
-            />
-
-        <RadioButton
-            android:id="@+id/radio_120_hz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/one_twenty_hz"
-            />
-
-    </RadioGroup>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
