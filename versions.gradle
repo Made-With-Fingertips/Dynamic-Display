@@ -3,7 +3,7 @@ ext {
     appVersionMajor = 0
     appVersionMinor = 0
     appVersionPatch = 4
-    appVersionBuild = 0
+    appVersionBuild = 1
 
     // Plugin Versions
     androidBuildToolsVersion = '4.0.0'
