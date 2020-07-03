@@ -36,7 +36,7 @@ class RefreshTileService : TileService(), CoroutineScope{
     override fun onClick() {
         super.onClick()
 
-        refreshRate.toggle()
+        refreshRate.cycle()
         updateQsTile(fromClick = true)
     }
 
@@ -55,13 +55,17 @@ class RefreshTileService : TileService(), CoroutineScope{
 
             this.label = refreshRate.lastRunningAppName
 
-            when (refreshRate.refreshRateMode) {
-                0 -> {
+            when (refreshRate.peakRefreshRate) {
+                60F -> {
                     this.icon = Icon.createWithResource(context, R.drawable.ic_qs_60)
                     // this.label = context.getString(R.string.sixty_hz)
                     mode = Mode.SIXTY
                 }
-                2 -> {
+                96F -> {
+                    this.icon = Icon.createWithResource(context, R.drawable.ic_qs_96)
+                    mode = Mode.NINETY_SIX
+                }
+                120F -> {
                     this.icon = Icon.createWithResource(context, R.drawable.ic_qs_120)
                     // this.label = context.getString(R.string.one_twenty_hz)
                     mode = Mode.ONE_TWENTY

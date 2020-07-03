@@ -92,7 +92,7 @@ class PermissionsFragment : Fragment() {
         private const val ARG_ACC = "acc"
         private const val ARG_ADB = "adb"
 
-        private const val INSTRUCTIONS_URL = "https://github.com/brericha/S20-Refresh-Rate/README.md"
+        private const val INSTRUCTIONS_URL = "https://github.com/brericha/S20-Refresh-Rate/blob/master/README.md"
         val INSTRUCTIONS_URI: Uri = Uri.parse(INSTRUCTIONS_URL)
 
         fun newInstance(acc: Boolean = false, adb: Boolean = false): PermissionsFragment {

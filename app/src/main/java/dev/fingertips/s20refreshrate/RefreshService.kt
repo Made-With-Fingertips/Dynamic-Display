@@ -57,6 +57,7 @@ class RefreshService : AccessibilityService(), CoroutineScope {
                         if (app != null) {
                             when (app.mode) {
                                 Mode.SIXTY -> refreshRate.set60Hz(packageName)
+                                Mode.NINETY_SIX -> refreshRate.set96Hz(packageName)
                                 Mode.ONE_TWENTY -> refreshRate.set120Hz(packageName)
                                 else -> refreshRate.setDefault(packageName)
                             }
@@ -106,7 +107,10 @@ class RefreshService : AccessibilityService(), CoroutineScope {
     companion object {
         val serviceConnected = MutableLiveData<Boolean>()
 
-        val ignoredPackages = listOf("com.android.systemui")
+        val ignoredPackages = listOf(
+            "com.android.systemui", // Notification shade and quick settings
+            "com.samsung.android.app.cocktailbarservice" // Edge Screen
+        )
 
         fun isAccessibilityServiceEnabled(context: Context, packageName: String): Boolean {
             val am = context.getSystemService(AccessibilityManager::class.java) ?: throw IllegalStateException("Unable to get AccessibilityManager")
