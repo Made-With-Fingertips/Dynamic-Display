@@ -107,7 +107,10 @@ class RefreshService : AccessibilityService(), CoroutineScope {
     companion object {
         val serviceConnected = MutableLiveData<Boolean>()
 
-        val ignoredPackages = listOf("com.android.systemui")
+        val ignoredPackages = listOf(
+            "com.android.systemui", // Notification shade and quick settings
+            "com.samsung.android.app.cocktailbarservice" // Edge Screen
+        )
 
         fun isAccessibilityServiceEnabled(context: Context, packageName: String): Boolean {
             val am = context.getSystemService(AccessibilityManager::class.java) ?: throw IllegalStateException("Unable to get AccessibilityManager")
