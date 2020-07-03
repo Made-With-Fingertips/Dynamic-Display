@@ -72,6 +72,19 @@ class RefreshRate @Inject constructor(
         }
     }
 
+    fun set96Hz(packageName: String? = null) {
+        if (packageName != null) lastRunningPackage = packageName
+
+        if (lastRefreshRate != 96F) {
+            d { "Changing to 96Hz" }
+            minRefreshRate = 96.0F
+            peakRefreshRate = 96.0F
+            refreshRateMode = 2
+
+            lastRefreshRate = 96F
+        }
+    }
+
     fun set120Hz(packageName: String? = null) {
         if (packageName != null) {
             lastRunningPackage = packageName
@@ -91,14 +104,16 @@ class RefreshRate @Inject constructor(
         d { "Changing to default Hz" }
         when (preferences.defaultRate) {
             60 -> set60Hz(packageName)
+            96 -> set96Hz(packageName)
             120 -> set120Hz(packageName)
         }
     }
 
-    fun toggle() {
-        when (refreshRateMode) {
-            0 -> set120Hz()
-            2 -> set60Hz()
+    fun cycle() {
+        when (peakRefreshRate) {
+            60F -> set96Hz()
+            96F -> set120Hz()
+            120F -> set60Hz()
         }
     }
 

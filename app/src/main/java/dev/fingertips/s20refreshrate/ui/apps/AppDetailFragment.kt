@@ -76,11 +76,14 @@ class AppDetailFragment : BottomSheetDialogFragment() {
             appDao.getApp(packageInfo.packageName).let {
                 app = it
 
-                toggle_group.check(when (app?.mode) {
-                    Mode.SIXTY -> R.id.toggle_60hz
-                    Mode.ONE_TWENTY -> R.id.toggle_120hz
-                    else -> R.id.toggle_default
-                })
+                with (toggle_group) {
+                    when (app?.mode) {
+                        Mode.SIXTY -> this.check(R.id.toggle_60hz)
+                        Mode.NINETY_SIX -> this.check(R.id.toggle_96hz)
+                        Mode.ONE_TWENTY -> this.check(R.id.toggle_120hz)
+                        else -> default_set_text.visibility = View.VISIBLE
+                    }
+                }
             }
         }
 
@@ -88,6 +91,7 @@ class AppDetailFragment : BottomSheetDialogFragment() {
         save_button.setOnClickListener {
             val newMode = when (toggle_group.checkedButtonId) {
                 R.id.toggle_60hz -> Mode.SIXTY
+                R.id.toggle_96hz -> Mode.NINETY_SIX
                 R.id.toggle_120hz -> Mode.ONE_TWENTY
                 else -> Mode.DEFAULT
             }

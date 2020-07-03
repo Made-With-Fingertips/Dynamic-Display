@@ -22,5 +22,4 @@ This is an application that allows you to change your refresh rate between 60Hz 
 
 ### TODO
 
-* Quick settings toggle
 * Investigate changing screen resolution

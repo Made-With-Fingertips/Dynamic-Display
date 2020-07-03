@@ -57,6 +57,7 @@ class RefreshService : AccessibilityService(), CoroutineScope {
                         if (app != null) {
                             when (app.mode) {
                                 Mode.SIXTY -> refreshRate.set60Hz(packageName)
+                                Mode.NINETY_SIX -> refreshRate.set96Hz(packageName)
                                 Mode.ONE_TWENTY -> refreshRate.set120Hz(packageName)
                                 else -> refreshRate.setDefault(packageName)
                             }

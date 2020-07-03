@@ -4,8 +4,10 @@
     <string name="action_default">Set Default Hz</string>
     <string name="action_search">Search</string>
 
+    <string name="default_set">Currently set to default refresh rate</string>
     <string name="default_hz">Default</string>
     <string name="sixty_hz">60 Hz</string>
+    <string name="ninety_six_hz">96 Hz</string>
     <string name="one_twenty_hz">120 Hz</string>
 
     <string name="save">Save</string>
