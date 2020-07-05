@@ -62,6 +62,18 @@ class AppsFragment : Fragment() {
             AppDetailFragment.newInstance(it).show(requireFragmentManager(), it)
         }
 
+        recyclerAdapter.setOnLongClickListener { packageName ->
+            MaterialDialog(requireContext()).show {
+                title(R.string.reset)
+                negativeButton(android.R.string.cancel)
+                positiveButton(android.R.string.ok) {
+                        lifecycleScope.launch {
+                            appDao.addAll(App(packageName, Mode.DEFAULT))
+                        }
+                    }
+            }
+        }
+
         fast_scroll.setupWithRecyclerView(recycler_view, { position ->
             val item = recyclerAdapter.getItemTitle(position)
             FastScrollItemIndicator.Text(item.substring(0, 1).toUpperCase())
@@ -116,6 +128,7 @@ class AppsFragment : Fragment() {
 
     override fun onDestroy() {
         recyclerAdapter.removeOnClickListener()
+        recyclerAdapter.removeOnLongClickListener()
         super.onDestroy()
     }
 
