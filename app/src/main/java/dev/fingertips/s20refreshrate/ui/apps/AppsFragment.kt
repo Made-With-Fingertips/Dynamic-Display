@@ -36,6 +36,7 @@ class AppsFragment : Fragment() {
 
     private var appStatusJob: Job? = null
     private var installedApps: List<PackageInfo>? = null
+    private var firstLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +99,8 @@ class AppsFragment : Fragment() {
         super.onResume()
 
         appStatusJob = lifecycleScope.launch {
+            if (firstLoad) progress_bar.visibility = View.VISIBLE
+
             installedApps = getInstalledApps()
             Timber.d("Got ${installedApps?.size} installed apps")
 
@@ -115,6 +118,8 @@ class AppsFragment : Fragment() {
 
                     Timber.d("Created ${appItems.size} AppItems")
 
+                    firstLoad = false
+                    progress_bar.visibility = View.GONE
                     recyclerAdapter.updateAppsList(appItems)
                 }
             }

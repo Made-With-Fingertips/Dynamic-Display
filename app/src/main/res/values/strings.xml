@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">S20 Refresh Rate</string>
+    <string name="app_name">Dynamic Display</string>
 
     <string name="action_default">Set Default Hz</string>
     <string name="action_search">Search</string>
@@ -13,19 +13,37 @@
     <string name="save">Save</string>
     <string name="reset">Reset preference?</string>
 
-    <string name="permission_adb">You need to grant S20 Refresh Rate the WRITE_SECURE_SETTINGS permission. This can be done with the adb tool. Visit or share the link below for instructions.</string>
+    <string name="permission_adb">You need to grant Dynamic Display the WRITE_SECURE_SETTINGS permission. This can be done with the adb tool. Visit or share the link below for instructions.</string>
     <string name="permission_adb_visit">Visit</string>
     <string name="permission_adb_share">Share</string>
     <string name="permission_adb_missing">WRITE_SECURE_SETTINGS permission is missing</string>
     <string name="permission_adb_missing_sub">Tap here to learn how to grant this permission</string>
 
-    <string name="permission_acc">S20 Refresh Rate uses an accessibility service to monitor when an app enters the foreground. Please enable the S20 Refresh Rate accessibility service</string>
+    <string name="permission_acc">Dynamic Display uses an accessibility service to monitor when an app enters the foreground. Please enable the Dynamic Display accessibility service</string>
     <string name="permission_acc_button">Enable Accessibility Service</string>
-    <string name="permission_acc_toast">Enable S20 Refresh Rate service</string>
+    <string name="permission_acc_toast">Enable Dynamic Display service</string>
 
     <string name="restart">Tap here to restart app after granting permissions</string>
 
-    <string name="acc_description">S20 Refresh Rate monitors the currently running app to change the display refresh rate per user settings</string>
+    <string name="acc_description">Dynamic Display monitors the currently running app to change the display refresh rate per user settings</string>
 
     <string name="qs_title">Refresh Rate</string>
+
+    <string name="valid_devices_warming">Dynamic Display is designed for use on the following devices only:</string>
+    <string name="valid_devices_warning_your_device">Your device is: </string>
+    <string name="valid_devices_dont_warn_again">Don\'t warn me again</string>
+    <string-array name="valid_devices_display_names">
+        <item>Samsung Galaxy S20 (SM-G980x)</item>
+        <item>Samsung Galaxy S20 5G (SM-G981x)</item>
+        <item>Samsung Galaxy S20+ (SM-G985x)</item>
+        <item>Samsung Galaxy S20+ 5G (SM-G986x)</item>
+        <item>Samsung Galaxy S20 Ultra 5G (SM-G988x)</item>
+    </string-array>
+    <string-array name="valid_devices_model_numbers">
+        <item>SM-G980</item> <!-- S20 -->
+        <item>SM-G981</item> <!-- S20 5G -->
+        <item>SM-G985</item> <!-- S20+ -->
+        <item>SM-G986</item> <!-- S20+ 5G -->
+        <item>SM-G988</item> <!-- S20 Ultra 5G -->
+    </string-array>
 </resources>
