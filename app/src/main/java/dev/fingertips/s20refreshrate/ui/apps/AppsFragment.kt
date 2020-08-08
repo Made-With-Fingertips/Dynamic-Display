@@ -12,12 +12,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
+import d
 import dev.fingertips.s20refreshrate.*
 import dev.fingertips.s20refreshrate.db.App
 import dev.fingertips.s20refreshrate.db.AppDao
@@ -32,6 +32,7 @@ import javax.inject.Inject
 
 class AppsFragment : Fragment() {
     @Inject lateinit var appDao: AppDao
+    @Inject lateinit var compatibilityCheck: CompatibilityCheck
     @Inject lateinit var packageManager: PackageManager
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var recyclerAdapter: AppListAdapter
@@ -92,9 +93,24 @@ class AppsFragment : Fragment() {
             }
         }
 
-        appDao.getAllAppsAsLiveData().observe(this, Observer { apps ->
-            // recyclerAdapter.updateSelectedAppsList(apps)
-        })
+        if (!preferences.skipCompatibilityCheck) {
+            compatibilityCheck.isDeviceCompatible().let { result ->
+                d { "isCompatible: ${result.isCompatible}, deviceModel: ${result.deviceModel}" }
+                if (!result.isCompatible) {
+                    val devices = resources.getStringArray(R.array.valid_devices_display_names)
+                    val message = getString(R.string.valid_devices_warning, devices.joinToString("\n"), result.deviceModel)
+                    MaterialDialog(requireContext()).show {
+                        title(R.string.valid_devices_warning_title)
+                        message(text = message)
+                        positiveButton(android.R.string.ok)
+                        negativeButton(R.string.valid_devices_dont_warn_again) {
+                            preferences.skipCompatibilityCheck = true
+                            dismiss()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {

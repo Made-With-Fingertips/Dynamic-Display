@@ -23,8 +23,8 @@
 
     <string name="qs_title">Refresh Rate</string>
 
-    <string name="valid_devices_warming">Dynamic Display is designed for use on the following devices only:</string>
-    <string name="valid_devices_warning_your_device">Your device is: </string>
+    <string name="valid_devices_warning_title">Device May Be Incompatible</string>
+    <string name="valid_devices_warning">Dynamic Display is designed for use on the following devices only: \n\n%1$s\n\n Your device is: %2$s</string>
     <string name="valid_devices_dont_warn_again">Don\'t warn me again</string>
     <string-array name="valid_devices_display_names">
         <item>Samsung Galaxy S20 (SM-G980x)</item>

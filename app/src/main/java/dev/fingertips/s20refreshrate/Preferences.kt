@@ -14,4 +14,8 @@ class Preferences @Inject constructor(
     var defaultRate: Int
         get() = prefs.getInt("defaultRate", 0)
         set(value) = prefs.edit().putInt("defaultRate", value).apply()
+
+    var skipCompatibilityCheck: Boolean
+        get() = prefs.getBoolean("skipCompatibilityCheck", false)
+        set(value) = prefs.edit().putBoolean("skipCompatibilityCheck", value).apply()
 }
