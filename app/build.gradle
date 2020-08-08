@@ -85,6 +85,8 @@ dependencies {
 
     implementation "com.reddit:indicator-fast-scroll:$fastScrollVersion"
 
+    implementation "com.sergivonavi:materialbanner:$bannerVersion"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"

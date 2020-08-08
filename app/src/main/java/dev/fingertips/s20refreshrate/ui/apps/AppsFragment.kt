@@ -1,26 +1,32 @@
 package dev.fingertips.s20refreshrate.ui.apps
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.google.android.material.snackbar.Snackbar
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
-import dev.fingertips.s20refreshrate.Preferences
-import dev.fingertips.s20refreshrate.R
-import dev.fingertips.s20refreshrate.RefreshApplication
+import d
+import dev.fingertips.s20refreshrate.*
 import dev.fingertips.s20refreshrate.db.App
 import dev.fingertips.s20refreshrate.db.AppDao
 import dev.fingertips.s20refreshrate.db.Mode
+import dev.fingertips.s20refreshrate.net.UpdateChecker
+import dev.fingertips.s20refreshrate.ui.about.AboutActivity
 import kotlinx.android.synthetic.main.fragment_apps.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,12 +36,15 @@ import javax.inject.Inject
 
 class AppsFragment : Fragment() {
     @Inject lateinit var appDao: AppDao
+    @Inject lateinit var compatibilityCheck: CompatibilityCheck
     @Inject lateinit var packageManager: PackageManager
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var recyclerAdapter: AppListAdapter
+    @Inject lateinit var updateChecker: UpdateChecker
 
     private var appStatusJob: Job? = null
     private var installedApps: List<PackageInfo>? = null
+    private var firstLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +71,18 @@ class AppsFragment : Fragment() {
             AppDetailFragment.newInstance(it).show(requireFragmentManager(), it)
         }
 
+        recyclerAdapter.setOnLongClickListener { packageName ->
+            MaterialDialog(requireContext()).show {
+                title(R.string.reset)
+                negativeButton(android.R.string.cancel)
+                positiveButton(android.R.string.ok) {
+                        lifecycleScope.launch {
+                            appDao.addAll(App(packageName, Mode.DEFAULT))
+                        }
+                    }
+            }
+        }
+
         fast_scroll.setupWithRecyclerView(recycler_view, { position ->
             val item = recyclerAdapter.getItemTitle(position)
             FastScrollItemIndicator.Text(item.substring(0, 1).toUpperCase())
@@ -77,15 +98,45 @@ class AppsFragment : Fragment() {
             }
         }
 
-        appDao.getAllAppsAsLiveData().observe(this, Observer { apps ->
-            // recyclerAdapter.updateSelectedAppsList(apps)
-        })
+        if (!preferences.skipCompatibilityCheck) {
+            compatibilityCheck.isDeviceCompatible().let { result ->
+                d { "isCompatible: ${result.isCompatible}, deviceModel: ${result.deviceModel}" }
+                if (!result.isCompatible) {
+                    val devices = resources.getStringArray(R.array.valid_devices_display_names)
+                    val message = getString(R.string.valid_devices_warning, devices.joinToString("\n"), result.deviceModel)
+                    MaterialDialog(requireContext()).show {
+                        title(R.string.valid_devices_warning_title)
+                        message(text = message)
+                        positiveButton(android.R.string.ok)
+                        negativeButton(R.string.valid_devices_dont_warn_again) {
+                            preferences.skipCompatibilityCheck = true
+                            dismiss()
+                        }
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val latestVersion = updateChecker.checkVersion()
+            latestVersion?.let {
+                if (it.code > BuildConfig.VERSION_CODE) {
+                    Snackbar.make(layout, "An update is available", Snackbar.LENGTH_LONG).setAction("More Info") {
+                        startActivity(Intent(requireContext(), AboutActivity::class.java))
+                    }.show()
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
+        checkForPermissions()
+
         appStatusJob = lifecycleScope.launch {
+            if (firstLoad) progress_bar.visibility = View.VISIBLE
+
             installedApps = getInstalledApps()
             Timber.d("Got ${installedApps?.size} installed apps")
 
@@ -103,6 +154,8 @@ class AppsFragment : Fragment() {
 
                     Timber.d("Created ${appItems.size} AppItems")
 
+                    firstLoad = false
+                    progress_bar.visibility = View.GONE
                     recyclerAdapter.updateAppsList(appItems)
                 }
             }
@@ -116,6 +169,7 @@ class AppsFragment : Fragment() {
 
     override fun onDestroy() {
         recyclerAdapter.removeOnClickListener()
+        recyclerAdapter.removeOnLongClickListener()
         super.onDestroy()
     }
 
@@ -161,9 +215,48 @@ class AppsFragment : Fragment() {
         if (item.itemId == R.id.action_default) {
             showDefaultDialog()
             return true
+        } else if (item.itemId == R.id.action_about) {
+            startActivity(Intent(requireContext(), AboutActivity::class.java))
+            return true
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkForPermissions() {
+        val serviceConnected = RefreshService.isAccessibilityServiceEnabled(requireContext(), requireContext().packageName)
+        val writeGranted = RefreshRate.isWriteSecureSettingsGranted(requireContext())
+
+        if (!serviceConnected || !writeGranted) {
+            banner.setMessage(when {
+                !serviceConnected && !writeGranted -> getString(R.string.permission_missing_both)
+                !serviceConnected -> getString(R.string.permission_missing_acc)
+                !writeGranted -> getString(R.string.permission_missing_adb)
+                else -> ""
+            })
+
+            if (!serviceConnected) {
+                banner.setLeftButton(R.string.permission_acc_button) {
+                    val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+
+            if (!writeGranted) {
+                banner.setRightButton(R.string.permission_adb_button) {
+                    val intent = Intent(Intent.ACTION_VIEW, INSTRUCTIONS_URI)
+                    if (intent.resolveActivity(requireContext().packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            banner.show()
+        } else {
+            banner.dismiss()
+        }
     }
 
     private fun getInstalledApps(): List<PackageInfo> {
@@ -196,5 +289,10 @@ class AppsFragment : Fragment() {
     private fun View.showKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    companion object {
+        private const val INSTRUCTIONS_URL = "https://fingertips.dev/DynamicDisplay#adb"
+        private val INSTRUCTIONS_URI = Uri.parse(INSTRUCTIONS_URL)
     }
 }

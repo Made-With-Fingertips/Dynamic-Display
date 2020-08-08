@@ -2,19 +2,15 @@ package dev.fingertips.s20refreshrate
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import d
 import dev.fingertips.s20refreshrate.db.AppDao
 import dev.fingertips.s20refreshrate.db.Mode
-import dev.fingertips.s20refreshrate.ui.permissions.PermissionsFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -72,9 +68,7 @@ class RefreshService : AccessibilityService(), CoroutineScope {
                         } catch (e: PackageManager.NameNotFoundException) {
                             refreshRate.lastRunningAppName = getString(R.string.app_name)
                         }
-                    } catch (e: SecurityException) {
-                        notifyPermissionNeeded()
-                    }
+                    } catch (ignored: SecurityException) {}
                 }
             }
         }
@@ -84,24 +78,6 @@ class RefreshService : AccessibilityService(), CoroutineScope {
         serviceConnected.postValue(false)
         job.cancel()
         return super.onUnbind(intent)
-    }
-
-    private fun notifyPermissionNeeded() {
-        val intent = Intent(Intent.ACTION_VIEW, PermissionsFragment.INSTRUCTIONS_URI)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
-        val builder = NotificationCompat.Builder(this, "adb").apply {
-            setSmallIcon(R.drawable.ic_stat_adb)
-            setContentTitle(getString(R.string.permission_adb_missing))
-            setContentText(getString(R.string.permission_adb_missing_sub))
-            setContentIntent(pendingIntent)
-            setAutoCancel(true)
-            priority = NotificationCompat.PRIORITY_LOW
-        }
-
-        with(NotificationManagerCompat.from(this)) {
-            notify(7, builder.build())
-        }
     }
 
     companion object {

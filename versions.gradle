@@ -2,25 +2,27 @@ ext {
     // Application Version
     appVersionMajor = 0
     appVersionMinor = 0
-    appVersionPatch = 4
-    appVersionBuild = 1
+    appVersionPatch = 5
+    appVersionBuild = 0
 
     // Plugin Versions
     androidBuildToolsVersion = '4.0.0'
-    kotlinVersion = '1.3.71'
+    kotlinVersion = '1.3.72'
 
     // Dependency versions
     // AndroidX https://maven.google.com
-    xAppcompatVersion = '1.1.0'
+    xAppcompatVersion = '1.2.0'
     xConstraintVersion = '1.1.3'
-    xCoreVersion = '1.2.0'
-    xEspressoVersion = '3.1.1'
+    xCoreVersion = '1.3.1'
+    xEspressoVersion = '3.2.0'
     xLifecycleVersion = '2.2.0'
-    xMaterialVersion = '1.2.0-alpha05'
-    xPreferenceVersion = '1.1.0'
+    xMaterialVersion = '1.2.0'
+    xPreferenceVersion = '1.1.1'
     xRecyclerVersion = '1.1.0'
     xRoomVersion = '2.2.5'
-    xTestRunnerVersion = '1.1.1'
+    xTestRunnerVersion = '1.2.0'
+
+    bannerVersion = '1.2.0'
 
     daggerVersion = '2.25.2' // https://github.com/google/dagger
 
@@ -28,7 +30,7 @@ ext {
 
     fastScrollVersion = '1.2.1'
 
-    kotlinCoroutinesVersion = '1.3.1' // https://github.com/Kotlin/kotlinx.coroutines#android
+    kotlinCoroutinesVersion = '1.3.6' // https://github.com/Kotlin/kotlinx.coroutines#android
 
     materialDialogsVersion = '3.3.0' // https://github.com/afollestad/material-dialogs/blob/master/documentation/CORE.md#gradle-dependency
 

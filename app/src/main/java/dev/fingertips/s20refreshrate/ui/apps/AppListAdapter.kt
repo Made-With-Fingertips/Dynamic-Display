@@ -23,6 +23,7 @@ class AppListAdapter @Inject constructor(
     private val originalAppsList = mutableListOf<AppItem>()
 
     private var onClickListener: (packageName: String) -> Unit = {}
+    private var onLongClickListener: (packageName: String) -> Unit = {}
 
     var onModeChangeListener: OnModeChangeListener? = null
 
@@ -49,6 +50,11 @@ class AppListAdapter @Inject constructor(
             holder.layout.setOnClickListener {
                 onClickListener.invoke(appItem.packageName)
             }
+
+            holder.layout.setOnLongClickListener {
+                onLongClickListener.invoke(appItem.packageName)
+                true
+            }
         }
     }
 
@@ -62,6 +68,14 @@ class AppListAdapter @Inject constructor(
 
     fun removeOnClickListener() {
         onClickListener = {}
+    }
+
+    fun setOnLongClickListener(listener: (packageName: String) -> Unit) {
+        onLongClickListener = listener
+    }
+
+    fun removeOnLongClickListener() {
+        onLongClickListener = {}
     }
 
     private fun String.containsIgnoreCase(rhs: String): Boolean {
