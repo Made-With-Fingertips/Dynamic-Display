@@ -22,6 +22,8 @@ ext {
     xRoomVersion = '2.2.5'
     xTestRunnerVersion = '1.1.1'
 
+    bannerVersion = '1.2.0'
+
     daggerVersion = '2.25.2' // https://github.com/google/dagger
 
     JUnitVersion = '4.13'
