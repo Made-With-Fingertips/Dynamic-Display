@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.fingertips.s20refreshrate">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     
@@ -14,7 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        
+
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:label="@string/action_about"
+            />
+
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action

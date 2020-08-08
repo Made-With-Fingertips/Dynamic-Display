@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Dynamic Display</string>
 
+    <string name="action_about">About</string>
     <string name="action_default">Set Default Hz</string>
     <string name="action_search">Search</string>
 
@@ -40,4 +41,10 @@
         <item>SM-G986</item> <!-- S20+ 5G -->
         <item>SM-G988</item> <!-- S20 Ultra 5G -->
     </string-array>
+
+    <string name="about_version">Version %1$s</string>
+    <string name="about_github">View Source Code on GitHub</string>
+    <string name="about_update">An update is available</string>
+    <string name="about_update_version">New version: %1$s</string>
+    <string name="about_update_download">Download Update</string>
 </resources>

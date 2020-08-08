@@ -16,13 +16,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.google.android.material.snackbar.Snackbar
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import d
 import dev.fingertips.s20refreshrate.*
 import dev.fingertips.s20refreshrate.db.App
 import dev.fingertips.s20refreshrate.db.AppDao
 import dev.fingertips.s20refreshrate.db.Mode
+import dev.fingertips.s20refreshrate.net.UpdateChecker
+import dev.fingertips.s20refreshrate.ui.about.AboutActivity
 import kotlinx.android.synthetic.main.fragment_apps.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -36,6 +40,7 @@ class AppsFragment : Fragment() {
     @Inject lateinit var packageManager: PackageManager
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var recyclerAdapter: AppListAdapter
+    @Inject lateinit var updateChecker: UpdateChecker
 
     private var appStatusJob: Job? = null
     private var installedApps: List<PackageInfo>? = null
@@ -108,6 +113,17 @@ class AppsFragment : Fragment() {
                             dismiss()
                         }
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val latestVersion = updateChecker.checkVersion()
+            latestVersion?.let {
+                if (it.code > BuildConfig.VERSION_CODE) {
+                    Snackbar.make(layout, "An update is available", Snackbar.LENGTH_LONG).setAction("More Info") {
+                        startActivity(Intent(requireContext(), AboutActivity::class.java))
+                    }.show()
                 }
             }
         }
@@ -198,6 +214,9 @@ class AppsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_default) {
             showDefaultDialog()
+            return true
+        } else if (item.itemId == R.id.action_about) {
+            startActivity(Intent(requireContext(), AboutActivity::class.java))
             return true
         }
 

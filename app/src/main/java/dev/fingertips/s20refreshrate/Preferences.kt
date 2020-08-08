@@ -18,4 +18,8 @@ class Preferences @Inject constructor(
     var skipCompatibilityCheck: Boolean
         get() = prefs.getBoolean("skipCompatibilityCheck", false)
         set(value) = prefs.edit().putBoolean("skipCompatibilityCheck", value).apply()
+
+    var latestVersion: String?
+        get() = prefs.getString("latestVersion", null)
+        set(value) = prefs.edit().putString("latestVersion", value).apply()
 }
