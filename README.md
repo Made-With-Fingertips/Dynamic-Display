@@ -1,4 +1,4 @@
-# S20 Refresh Rate
+# Dynamic Display
 
 ---
 
