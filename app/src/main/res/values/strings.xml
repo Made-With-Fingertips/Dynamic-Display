@@ -33,6 +33,7 @@
         <item>Samsung Galaxy S20+ (SM-G985x)</item>
         <item>Samsung Galaxy S20+ 5G (SM-G986x)</item>
         <item>Samsung Galaxy S20 Ultra 5G (SM-G988x)</item>
+        <item>Samsung Galaxy Note20 Ultra (SM-N986x)</item>
     </string-array>
     <string-array name="valid_devices_model_numbers">
         <item>SM-G980</item> <!-- S20 -->
@@ -40,6 +41,7 @@
         <item>SM-G985</item> <!-- S20+ -->
         <item>SM-G986</item> <!-- S20+ 5G -->
         <item>SM-G988</item> <!-- S20 Ultra 5G -->
+        <item>SM-N986</item> <!-- Note20 Ultra -->
     </string-array>
 
     <string name="about_version">Version %1$s</string>
