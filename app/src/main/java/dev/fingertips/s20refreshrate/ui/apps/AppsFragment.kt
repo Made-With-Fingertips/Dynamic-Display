@@ -2,6 +2,7 @@ package dev.fingertips.s20refreshrate.ui.apps
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -148,7 +149,8 @@ class AppsFragment : Fragment() {
                             name = info.applicationInfo.loadLabel(packageManager).toString(),
                             packageName = info.packageName,
                             icon = info.applicationInfo.loadIcon(packageManager),
-                            mode = apps.find { it.packageName == info.packageName }?.mode ?: Mode.DEFAULT
+                            mode = apps.find { it.packageName == info.packageName }?.mode ?: Mode.DEFAULT,
+                            isSystem = info.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
                         )
                     }.sortedBy { it.name.toLowerCase(Locale.getDefault()) }
 
@@ -156,6 +158,7 @@ class AppsFragment : Fragment() {
 
                     firstLoad = false
                     progress_bar.visibility = View.GONE
+                    recyclerAdapter.setOriginalAppsList(appItems)
                     recyclerAdapter.updateAppsList(appItems)
                 }
             }
@@ -175,6 +178,8 @@ class AppsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
+
+        menu.findItem(R.id.action_hide_system).isChecked = preferences.hideSystemApps
 
         val searchView = menu.findItem(R.id.action_search).actionView as SearchView
         menu.findItem(R.id.action_search).setOnActionExpandListener(object: MenuItem.OnActionExpandListener {
@@ -212,15 +217,26 @@ class AppsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_default) {
-            showDefaultDialog()
-            return true
-        } else if (item.itemId == R.id.action_about) {
-            startActivity(Intent(requireContext(), AboutActivity::class.java))
-            return true
-        }
+        return when (item.itemId) {
+            R.id.action_default -> {
+                showDefaultDialog()
+                true
+            }
+            R.id.action_about -> {
+                startActivity(Intent(requireContext(), AboutActivity::class.java))
+                true
+            }
+            R.id.action_hide_system -> {
+                with (!recyclerAdapter.hideSystemApps) {
+                    recyclerAdapter.hideSystemApps = this
+                    item.isChecked = this
+                }
 
-        return super.onOptionsItemSelected(item)
+                recyclerAdapter.refreshList()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun checkForPermissions() {

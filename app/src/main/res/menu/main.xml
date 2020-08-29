@@ -12,6 +12,13 @@
         />
 
     <item
+        android:id="@+id/action_hide_system"
+        android:title="@string/action_hide_system"
+        app:showAsAction="never"
+        android:checkable="true"
+        />
+
+    <item
         android:id="@+id/action_default"
         android:title="@string/action_default"
         app:showAsAction="never"

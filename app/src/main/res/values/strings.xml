@@ -3,6 +3,7 @@
 
     <string name="action_about">About</string>
     <string name="action_default">Set Default Hz</string>
+    <string name="action_hide_system">Hide System Apps</string>
     <string name="action_search">Search</string>
 
     <string name="default_set">Currently set to default refresh rate</string>

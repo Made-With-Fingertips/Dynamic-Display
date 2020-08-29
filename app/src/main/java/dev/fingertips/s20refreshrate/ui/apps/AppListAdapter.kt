@@ -1,7 +1,6 @@
 package dev.fingertips.s20refreshrate.ui.apps
 
 import android.content.Context
-import android.content.pm.PackageInfo
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import dev.fingertips.s20refreshrate.Preferences
 import dev.fingertips.s20refreshrate.R
 import dev.fingertips.s20refreshrate.db.Mode
 import timber.log.Timber
@@ -17,7 +17,8 @@ import java.util.*
 import javax.inject.Inject
 
 class AppListAdapter @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val preferences: Preferences
 ) : RecyclerView.Adapter<AppListAdapter.AppViewHolder>() {
     private val appsList = mutableListOf<AppItem>()
     private val originalAppsList = mutableListOf<AppItem>()
@@ -26,6 +27,12 @@ class AppListAdapter @Inject constructor(
     private var onLongClickListener: (packageName: String) -> Unit = {}
 
     var onModeChangeListener: OnModeChangeListener? = null
+
+    var hideSystemApps = preferences.hideSystemApps
+        set(value) {
+            preferences.hideSystemApps = value
+            field = value
+        }
 
     override fun getItemCount(): Int = appsList.size
 
@@ -86,32 +93,40 @@ class AppListAdapter @Inject constructor(
         val results = originalAppsList
             .filter { it.name.containsIgnoreCase(query) || it.packageName.containsIgnoreCase(query) }
             .sortedBy { it.name.toLowerCase(Locale.getDefault()) }
-        updateAppsList(results, true)
+        updateAppsList(results, forceSystem = true)
     }
 
     fun endSearch() {
-        updateAppsList(originalAppsList, true)
+        updateAppsList(originalAppsList)
     }
 
-    fun updateAppsList(newList: List<AppItem>, fromSearch: Boolean = false) {
+    fun refreshList() {
+        updateAppsList(originalAppsList)
+    }
+
+    fun updateAppsList(newList: List<AppItem>, forceSystem: Boolean = false) {
         Timber.d("Received ${newList.size} new AppItems")
-        val diff = Diff(appsList, newList)
+        val filteredNewList = newList.filter {
+            when {
+                forceSystem -> true
+                hideSystemApps -> !it.isSystem
+                else -> true
+            }
+        }
+        Timber.d("After filtering: ${filteredNewList.size} items")
+
+        val diff = Diff(appsList, filteredNewList)
         val result = DiffUtil.calculateDiff(diff)
 
         appsList.clear()
-        appsList.addAll(newList)
-
-        if (!fromSearch) {
-            originalAppsList.clear()
-            originalAppsList.addAll(appsList)
-        }
+        appsList.addAll(filteredNewList)
 
         result.dispatchUpdatesTo(this)
     }
 
-    private fun isSystemApp(packageInfo: PackageInfo): Boolean {
-        return false
-        // return ((packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0)
+    fun setOriginalAppsList(newList: List<AppItem>) {
+        originalAppsList.clear()
+        originalAppsList.addAll(newList)
     }
 
     interface OnModeChangeListener {
@@ -144,6 +159,7 @@ class AppListAdapter @Inject constructor(
         val name: String,
         val packageName: String,
         val icon: Drawable?,
-        val mode: Mode
+        val mode: Mode,
+        val isSystem: Boolean
     )
 }
