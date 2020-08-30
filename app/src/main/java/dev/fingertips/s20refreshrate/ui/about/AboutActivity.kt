@@ -44,6 +44,11 @@ class AboutActivity : AppCompatActivity() {
                 }
             }
         }
+
+        discord_button.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, DISCORD_URI)
+            if (intent.resolveActivity(packageManager) != null) startActivity(intent)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -56,9 +61,11 @@ class AboutActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val DISCORD_URL = "https://discord.gg/dMAkJgU"
         private const val GITHUB_URL = "https://github.com/Made-With-Fingertips/S20-Refresh-Rate/"
         private const val GITHUB_RELEASES_URL = "https://github.com/Made-With-Fingertips/S20-Refresh-Rate/releases"
 
+        private val DISCORD_URI = Uri.parse(DISCORD_URL)
         private val GITHUB_URI = Uri.parse(GITHUB_URL)
         private val GITHUB_RELEASES_URI = Uri.parse(GITHUB_RELEASES_URL)
     }
