@@ -49,7 +49,6 @@ class AppListAdapter @Inject constructor(
 
             holder.mode.text = when (appItem.mode) {
                 Mode.SIXTY -> context.getString(R.string.sixty_hz)
-                Mode.NINETY_SIX -> context.getString(R.string.ninety_six_hz)
                 Mode.ONE_TWENTY -> context.getString(R.string.one_twenty_hz)
                 else -> context.getString(R.string.default_hz)
             }

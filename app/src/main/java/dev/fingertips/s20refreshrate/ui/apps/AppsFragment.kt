@@ -122,7 +122,7 @@ class AppsFragment : Fragment() {
             val latestVersion = updateChecker.checkVersion()
             latestVersion?.let {
                 if (it.code > BuildConfig.VERSION_CODE) {
-                    Snackbar.make(layout, "An update is available", Snackbar.LENGTH_LONG).setAction("More Info") {
+                    Snackbar.make(layout, R.string.about_update, Snackbar.LENGTH_LONG).setAction(R.string.about_update_more_info) {
                         startActivity(Intent(requireContext(), AboutActivity::class.java))
                     }.show()
                 }

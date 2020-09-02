@@ -9,7 +9,6 @@
     <string name="default_set">Currently set to default refresh rate</string>
     <string name="default_hz">Default</string>
     <string name="sixty_hz">60 Hz</string>
-    <string name="ninety_six_hz">96 Hz</string>
     <string name="one_twenty_hz">120 Hz</string>
 
     <string name="save">Save</string>
@@ -48,6 +47,7 @@
     <string name="about_version">Version %1$s</string>
     <string name="about_github">View Source Code on GitHub</string>
     <string name="about_update">An update is available</string>
+    <string name="about_update_more_info">More Info</string>
     <string name="about_update_version">New version: %1$s</string>
     <string name="about_update_download">Download Update</string>
 </resources>

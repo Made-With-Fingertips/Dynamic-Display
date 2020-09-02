@@ -8,7 +8,6 @@ class DbConverters {
     fun intFromMode(value: Mode): Int {
         return when (value) {
             Mode.SIXTY -> 1
-            Mode.NINETY_SIX -> 3
             Mode.ONE_TWENTY -> 2
             else -> 0
         }
@@ -19,7 +18,6 @@ class DbConverters {
         return when (value) {
             1 -> Mode.SIXTY
             2 -> Mode.ONE_TWENTY
-            3 -> Mode.NINETY_SIX
             else -> Mode.DEFAULT
         }
     }
