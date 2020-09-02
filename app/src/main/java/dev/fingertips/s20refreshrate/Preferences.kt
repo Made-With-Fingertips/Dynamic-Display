@@ -22,4 +22,8 @@ class Preferences @Inject constructor(
     var latestVersion: String?
         get() = prefs.getString("latestVersion", null)
         set(value) = prefs.edit().putString("latestVersion", value).apply()
+
+    var hideSystemApps: Boolean
+        get() = prefs.getBoolean("hideSystemApps", false)
+        set(value) = prefs.edit().putBoolean("hideSystemApps", value).apply()
 }

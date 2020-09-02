@@ -101,4 +101,14 @@
         app:constraint_referenced_ids="update_available,update_version,update_download_button"
         />
 
+    <ImageView
+        android:id="@+id/discord_button"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_discord_logo_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
