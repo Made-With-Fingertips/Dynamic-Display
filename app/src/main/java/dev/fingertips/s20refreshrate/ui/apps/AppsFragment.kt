@@ -282,16 +282,18 @@ class AppsFragment : Fragment() {
     private fun showDefaultDialog() {
         val selected = when (preferences.defaultRate) {
             60 -> 0
-            120 -> 1
+            96 -> 1
+            120 -> 2
             else -> -1
         }
 
         MaterialDialog(requireContext()).show {
             title(R.string.action_default)
-            listItemsSingleChoice(items = listOf(getString(R.string.sixty_hz), getString(R.string.one_twenty_hz)), initialSelection = selected) { _, index, _ ->
+            listItemsSingleChoice(items = listOf(getString(R.string.sixty_hz), getString(R.string.ninety_six_hz), getString(R.string.one_twenty_hz)), initialSelection = selected) { _, index, _ ->
                 when (index) {
                     0 -> preferences.defaultRate = 60
-                    1 -> preferences.defaultRate = 120
+                    1 -> preferences.defaultRate = 96
+                    2 -> preferences.defaultRate = 120
                 }
             }
         }

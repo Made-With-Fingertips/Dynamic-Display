@@ -9,8 +9,9 @@ android {
 
     defaultConfig {
         applicationId "dev.fingertips.s20refreshrate"
-        minSdkVersion 23
-        targetSdkVersion 29
+        minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 21
 
         versionCode appVersionMajor * 10000 + appVersionMinor * 1000 + appVersionPatch * 100 + appVersionBuild
         versionName "${appVersionMajor}.${appVersionMinor}.${appVersionPatch}"
@@ -35,8 +36,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix '.dev'
-            versionNameSuffix '-dev'
+            applicationIdSuffix '.superdev'
+            versionNameSuffix '-superdev'
         }
     }
     androidExtensions {
