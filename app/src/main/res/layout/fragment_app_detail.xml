@@ -72,19 +72,19 @@
             />
 
         <Button
-            android:id="@+id/toggle_120hz"
+            android:id="@+id/toggle_96hz"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/one_twenty_hz"
+            android:text="@string/ninety_six_hz"
             android:layout_weight="1"
             style="?attr/materialButtonOutlinedStyle"
             />
 
         <Button
-            android:id="@+id/toggle_default"
+            android:id="@+id/toggle_120hz"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/default_hz"
+            android:text="@string/one_twenty_hz"
             android:layout_weight="1"
             style="?attr/materialButtonOutlinedStyle"
             />

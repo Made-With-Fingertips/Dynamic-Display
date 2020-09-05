@@ -69,7 +69,7 @@ class AppsFragment : Fragment() {
         recycler_view.adapter = recyclerAdapter
 
         recyclerAdapter.setOnClickListener {
-            AppDetailFragment.newInstance(it).show(requireFragmentManager(), it)
+            AppDetailFragment.newInstance(it).show(parentFragmentManager, it)
         }
 
         recyclerAdapter.setOnLongClickListener { packageName ->
@@ -241,34 +241,15 @@ class AppsFragment : Fragment() {
 
     private fun checkForPermissions() {
         val serviceConnected = RefreshService.isAccessibilityServiceEnabled(requireContext(), requireContext().packageName)
-        val writeGranted = RefreshRate.isWriteSecureSettingsGranted(requireContext())
 
-        if (!serviceConnected || !writeGranted) {
-            banner.setMessage(when {
-                !serviceConnected && !writeGranted -> getString(R.string.permission_missing_both)
-                !serviceConnected -> getString(R.string.permission_missing_acc)
-                !writeGranted -> getString(R.string.permission_missing_adb)
-                else -> ""
-            })
-
-            if (!serviceConnected) {
-                banner.setLeftButton(R.string.permission_acc_button) {
-                    val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
-                }
+        if (!serviceConnected) {
+            banner.setMessage(getString(R.string.permission_missing_acc))
+            banner.setLeftButton(R.string.permission_acc_button) {
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
             }
-
-            if (!writeGranted) {
-                banner.setRightButton(R.string.permission_adb_button) {
-                    val intent = Intent(Intent.ACTION_VIEW, INSTRUCTIONS_URI)
-                    if (intent.resolveActivity(requireContext().packageManager) != null) {
-                        startActivity(intent)
-                    }
-                }
-            }
-
             banner.show()
         } else {
             banner.dismiss()
@@ -282,16 +263,18 @@ class AppsFragment : Fragment() {
     private fun showDefaultDialog() {
         val selected = when (preferences.defaultRate) {
             60 -> 0
-            120 -> 1
+            96 -> 1
+            120 -> 2
             else -> -1
         }
 
         MaterialDialog(requireContext()).show {
             title(R.string.action_default)
-            listItemsSingleChoice(items = listOf(getString(R.string.sixty_hz), getString(R.string.one_twenty_hz)), initialSelection = selected) { _, index, _ ->
+            listItemsSingleChoice(items = listOf(getString(R.string.sixty_hz), getString(R.string.ninety_six_hz), getString(R.string.one_twenty_hz)), initialSelection = selected) { _, index, _ ->
                 when (index) {
                     0 -> preferences.defaultRate = 60
-                    1 -> preferences.defaultRate = 120
+                    1 -> preferences.defaultRate = 96
+                    2 -> preferences.defaultRate = 120
                 }
             }
         }

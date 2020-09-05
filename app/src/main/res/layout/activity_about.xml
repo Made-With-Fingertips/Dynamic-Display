@@ -105,7 +105,7 @@
         android:id="@+id/discord_button"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/ic_discord_logo_black"
+        android:src="@drawable/ic_discord_logo_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

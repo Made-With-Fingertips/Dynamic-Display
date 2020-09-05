@@ -26,4 +26,8 @@ class Preferences @Inject constructor(
     var hideSystemApps: Boolean
         get() = prefs.getBoolean("hideSystemApps", false)
         set(value) = prefs.edit().putBoolean("hideSystemApps", value).apply()
+
+    var firstRun: Boolean
+        get() = prefs.getBoolean("firstRun", true)
+        set(value) = prefs.edit().putBoolean("firstRun", value).apply()
 }
