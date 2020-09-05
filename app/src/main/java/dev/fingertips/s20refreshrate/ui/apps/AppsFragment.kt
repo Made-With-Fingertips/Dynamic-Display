@@ -69,7 +69,7 @@ class AppsFragment : Fragment() {
         recycler_view.adapter = recyclerAdapter
 
         recyclerAdapter.setOnClickListener {
-            AppDetailFragment.newInstance(it).show(requireFragmentManager(), it)
+            AppDetailFragment.newInstance(it).show(parentFragmentManager, it)
         }
 
         recyclerAdapter.setOnLongClickListener { packageName ->
@@ -241,34 +241,15 @@ class AppsFragment : Fragment() {
 
     private fun checkForPermissions() {
         val serviceConnected = RefreshService.isAccessibilityServiceEnabled(requireContext(), requireContext().packageName)
-        val writeGranted = RefreshRate.isWriteSecureSettingsGranted(requireContext())
 
-        if (!serviceConnected || !writeGranted) {
-            banner.setMessage(when {
-                !serviceConnected && !writeGranted -> getString(R.string.permission_missing_both)
-                !serviceConnected -> getString(R.string.permission_missing_acc)
-                !writeGranted -> getString(R.string.permission_missing_adb)
-                else -> ""
-            })
-
-            if (!serviceConnected) {
-                banner.setLeftButton(R.string.permission_acc_button) {
-                    val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
-                }
+        if (!serviceConnected) {
+            banner.setMessage(getString(R.string.permission_missing_acc))
+            banner.setLeftButton(R.string.permission_acc_button) {
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                Toast.makeText(requireContext(), R.string.permission_acc_toast, Toast.LENGTH_LONG).show()
             }
-
-            if (!writeGranted) {
-                banner.setRightButton(R.string.permission_adb_button) {
-                    val intent = Intent(Intent.ACTION_VIEW, INSTRUCTIONS_URI)
-                    if (intent.resolveActivity(requireContext().packageManager) != null) {
-                        startActivity(intent)
-                    }
-                }
-            }
-
             banner.show()
         } else {
             banner.dismiss()

@@ -78,7 +78,7 @@ class RefreshRate @Inject constructor(
 
         if (lastRefreshRate != 60F) {
             d { "Changing to 60Hz" }
-            //minRefreshRate = 60.0F
+            minRefreshRate = 60.0F
             peakRefreshRate = 60.0F
             //refreshRateMode = 0
 
@@ -91,6 +91,7 @@ class RefreshRate @Inject constructor(
 
         if (lastRefreshRate != 96F) {
             d { "Changing to 96Hz" }
+            minRefreshRate = 96.0F
             peakRefreshRate = 96.0F
             lastRefreshRate = 96F
         }
@@ -103,7 +104,7 @@ class RefreshRate @Inject constructor(
 
         if (lastRefreshRate != 120F) {
             d { "Changing to 120Hz" }
-            //minRefreshRate = 120.0F
+            minRefreshRate = 120.0F
             peakRefreshRate = 120.0F
             //refreshRateMode = 2
 
