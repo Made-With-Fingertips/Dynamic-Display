@@ -79,8 +79,8 @@ class AppDetailFragment : BottomSheetDialogFragment() {
                 with (toggle_group) {
                     when (app?.mode) {
                         Mode.SIXTY -> this.check(R.id.toggle_60hz)
+                        Mode.NINETY_SIX -> this.check(R.id.toggle_96hz)
                         Mode.ONE_TWENTY -> this.check(R.id.toggle_120hz)
-                        else -> this.check(R.id.toggle_default)
                     }
                 }
             }
@@ -90,8 +90,8 @@ class AppDetailFragment : BottomSheetDialogFragment() {
         save_button.setOnClickListener {
             val newMode = when (toggle_group.checkedButtonId) {
                 R.id.toggle_60hz -> Mode.SIXTY
+                R.id.toggle_96hz -> Mode.NINETY_SIX
                 R.id.toggle_120hz -> Mode.ONE_TWENTY
-                R.id.toggle_default -> Mode.DEFAULT
                 else -> Mode.DEFAULT
             }
 

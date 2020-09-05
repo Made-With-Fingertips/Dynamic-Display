@@ -1,7 +1,7 @@
 ext {
     // Application Version
-    appVersionMajor = 0
-    appVersionMinor = 1
+    appVersionMajor = 1
+    appVersionMinor = 0
     appVersionPatch = 0
     appVersionBuild = 0
 

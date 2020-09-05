@@ -61,6 +61,10 @@ class RefreshTileService : TileService(), CoroutineScope{
                     // this.label = context.getString(R.string.sixty_hz)
                     mode = Mode.SIXTY
                 }
+                96F -> {
+                    this.icon = Icon.createWithResource(context, R.drawable.ic_qs_96)
+                    mode = Mode.NINETY_SIX
+                }
                 120F -> {
                     this.icon = Icon.createWithResource(context, R.drawable.ic_qs_120)
                     // this.label = context.getString(R.string.one_twenty_hz)

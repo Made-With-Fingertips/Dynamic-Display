@@ -9,15 +9,13 @@
     <string name="default_set">Currently set to default refresh rate</string>
     <string name="default_hz">Default</string>
     <string name="sixty_hz">60 Hz</string>
+    <string name="ninety_six_hz">96 Hz</string>
     <string name="one_twenty_hz">120 Hz</string>
 
     <string name="save">Save</string>
     <string name="reset">Reset preference?</string>
 
-    <string name="permission_adb_button">ADB Permission</string>
     <string name="permission_acc_button">Accessibility</string>
-    <string name="permission_missing_both">ADB permission is not granted and Accessibility Service is not enabled. Please click an option to finish setup.</string>
-    <string name="permission_missing_adb">ADB permission is not granted. Please click below to finish setup.</string>
     <string name="permission_missing_acc">Accessibility Service is not enabled. Please click below to finish setup.</string>
     <string name="permission_acc_toast">Click "Installed services", then enable Dynamic Display service</string>
     <string name="acc_description">Dynamic Display monitors the currently running app to change the display refresh rate per user settings</string>

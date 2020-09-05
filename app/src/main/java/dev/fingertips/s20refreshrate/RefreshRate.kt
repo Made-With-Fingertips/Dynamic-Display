@@ -2,8 +2,10 @@ package dev.fingertips.s20refreshrate
 
 import android.Manifest
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.provider.Settings
 import androidx.core.content.ContextCompat
 import d
@@ -22,37 +24,49 @@ class RefreshRate @Inject constructor(
     var minRefreshRate: Float
         get() {
             return try {
-                Settings.Secure.getFloat(contentResolver, MIN_REFRESH_RATE)
+                Settings.System.getFloat(contentResolver, MIN_REFRESH_RATE)
             } catch (e: RuntimeException) {
                 60F
             }
         }
         set(value) {
-            Settings.Secure.putFloat(contentResolver, MIN_REFRESH_RATE, value)
+            // Settings.Secure.putFloat(contentResolver, MIN_REFRESH_RATE, value)
+            val cv = ContentValues(2)
+            cv.put("name", MIN_REFRESH_RATE)
+            cv.put("value", value)
+            contentResolver.insert(Uri.parse("content://settings/system"), cv)
         }
 
     var peakRefreshRate: Float
         get()  {
             return try {
-                Settings.Secure.getFloat(contentResolver, PEAK_REFRESH_RATE)
+                Settings.System.getFloat(contentResolver, PEAK_REFRESH_RATE)
             } catch (e: RuntimeException) {
                 60F
             }
         }
         set(value) {
-            Settings.Secure.putFloat(contentResolver, PEAK_REFRESH_RATE, value)
+            //Settings.Secure.putFloat(contentResolver, PEAK_REFRESH_RATE, value)
+            val cv = ContentValues(2)
+            cv.put("name", PEAK_REFRESH_RATE)
+            cv.put("value", value)
+            contentResolver.insert(Uri.parse("content://settings/system"), cv)
         }
 
     var refreshRateMode: Int
         get() {
             return try {
-                Settings.Secure.getInt(contentResolver, REFRESH_RATE_MODE)
+                Settings.System.getInt(contentResolver, REFRESH_RATE_MODE)
             } catch (e: RuntimeException) {
                 0
             }
         }
         set(value) {
-            Settings.Secure.putInt(contentResolver, REFRESH_RATE_MODE, value)
+            // Settings.Secure.putInt(contentResolver, REFRESH_RATE_MODE, value)
+            val cv = ContentValues(2)
+            cv.put("name", REFRESH_RATE_MODE)
+            cv.put("value", value)
+            contentResolver.insert(Uri.parse("content://settings/system"), cv)
         }
 
     private var lastRefreshRate: Float = 0F
@@ -66,9 +80,20 @@ class RefreshRate @Inject constructor(
             d { "Changing to 60Hz" }
             minRefreshRate = 60.0F
             peakRefreshRate = 60.0F
-            refreshRateMode = 0
+            //refreshRateMode = 0
 
             lastRefreshRate = 60F
+        }
+    }
+
+    fun set96Hz(packageName: String? = null) {
+        if (packageName != null) lastRunningPackage = packageName
+
+        if (lastRefreshRate != 96F) {
+            d { "Changing to 96Hz" }
+            minRefreshRate = 96.0F
+            peakRefreshRate = 96.0F
+            lastRefreshRate = 96F
         }
     }
 
@@ -81,7 +106,7 @@ class RefreshRate @Inject constructor(
             d { "Changing to 120Hz" }
             minRefreshRate = 120.0F
             peakRefreshRate = 120.0F
-            refreshRateMode = 2
+            //refreshRateMode = 2
 
             lastRefreshRate = 120F
         }
@@ -91,13 +116,15 @@ class RefreshRate @Inject constructor(
         d { "Changing to default Hz" }
         when (preferences.defaultRate) {
             60 -> set60Hz(packageName)
+            96 -> set96Hz(packageName)
             120 -> set120Hz(packageName)
         }
     }
 
     fun cycle() {
         when (peakRefreshRate) {
-            60F -> set120Hz()
+            60F -> set96Hz()
+            96F -> set120Hz()
             120F -> set60Hz()
         }
     }
