@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dynamic Display Test</string>
+    <string name="app_name">Dynamic Display</string>
 
     <string name="action_about">About</string>
     <string name="action_default">Set Default Hz</string>

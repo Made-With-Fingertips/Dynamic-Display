@@ -36,8 +36,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix '.superdev'
-            versionNameSuffix '-superdev'
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
         }
     }
     androidExtensions {
